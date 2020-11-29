@@ -1,10 +1,10 @@
 package com.s.popularimageapp.model
 
 data class GiphyResponse(
-    val data: List<Datam>,
+    val data: List<Datum>,
 )
 
-data class Datam (
+data class Datum (
     val bitly_gif_url: String,
     val bitly_url: String,
     val content_url: String,
@@ -13,16 +13,16 @@ data class Datam (
     val images: Images,
     val import_datetime: String,
     val is_sticker: Int,
-    val rating: String,
+    val rating: String?,
     val slug: String,
-    val source: String,
+    val source: String?,
     val source_post_url: String,
     val source_tld: String,
     val title: String,
     val trending_datetime: String,
     val type: String,
     val url: String,
-    val user: User,
+    val user: User?,
     val username: String
 )
 
@@ -114,7 +114,7 @@ data class FixedHeight(
 data class FixedHeightDownsampled(
     val height: String,
     val size: String,
-    val url: String,
+    val url: String?,
     val webp: String,
     val webp_size: String,
     val width: String
