@@ -1,6 +1,6 @@
-package com.s.imagesapp.api
-import com.s.popularimageapp.Constants.Companion.BASE_URL
-import com.s.popularimageapp.api.ApiService
+package com.s.popularimageapp.api
+
+import com.s.popularimageapp.utils.Constants.Companion.BASE_URL
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

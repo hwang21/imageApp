@@ -1,10 +1,10 @@
 package com.s.popularimageapp.model
 
-data class TrendingImages(
-    val dataList: List<Data>,
+data class GiphyResponse(
+    val data: List<Datum>,
 )
 
-data class Data(
+data class Datum (
     val bitly_gif_url: String,
     val bitly_url: String,
     val content_url: String,
@@ -13,22 +13,20 @@ data class Data(
     val images: Images,
     val import_datetime: String,
     val is_sticker: Int,
-    val rating: String,
+    val rating: String?,
     val slug: String,
-    val source: String,
+    val source: String?,
     val source_post_url: String,
     val source_tld: String,
     val title: String,
     val trending_datetime: String,
     val type: String,
     val url: String,
-    val user: User,
+    val user: User?,
     val username: String
 )
 
 data class Images(
-    val `480w_still`: WStill,
-    val `4k`: K,
     val downsized: Downsized,
     val downsized_large: DownsizedLarge,
     val downsized_medium: DownsizedMedium,
@@ -65,20 +63,6 @@ data class User(
     val profile_url: String,
     val username: String,
     val website_url: String
-)
-
-data class WStill(
-    val height: String,
-    val size: String,
-    val url: String,
-    val width: String
-)
-
-data class K(
-    val height: String,
-    val mp4: String,
-    val mp4_size: String,
-    val width: String
 )
 
 data class Downsized(
@@ -130,7 +114,7 @@ data class FixedHeight(
 data class FixedHeightDownsampled(
     val height: String,
     val size: String,
-    val url: String,
+    val url: String?,
     val webp: String,
     val webp_size: String,
     val width: String
