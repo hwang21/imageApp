@@ -1,4 +1,4 @@
-package com.s.popularimageapp.Repository
+package com.s.popularimageapp.repository
 
 import com.s.popularimageapp.api.ApiService
 

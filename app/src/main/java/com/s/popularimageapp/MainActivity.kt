@@ -1,17 +1,17 @@
 package com.s.popularimageapp
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.s.imagesapp.api.RetrofitInstance
+import com.s.popularimageapp.api.RetrofitInstance
 import com.s.popularimageapp.adapter.MainAdapter
-import com.s.popularimageapp.model.Data
+import com.s.popularimageapp.model.Datam
 import com.s.popularimageapp.utils.Status
 import com.s.popularimageapp.viewmodel.MainViewModel
 import com.s.popularimageapp.viewmodel.ViewModelFactory
@@ -19,45 +19,41 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: MainViewModel
-    private lateinit var adapter: MainAdapter
+    private val viewModel by viewModels<MainViewModel> {
+        ViewModelFactory(RetrofitInstance.apiService)
+    }
 
+    private lateinit var adapter: MainAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setupViewModel()
         setupUI()
         setupObservers()
 
     }
 
-    private fun setupViewModel() {
-        viewModel = ViewModelProviders.of(
-                this,
-                ViewModelFactory(RetrofitInstance.apiService)).get(MainViewModel::class.java)
-    }
-
     private fun setupUI() {
-        recyclerView.layoutManager = GridLayoutManager(this, 2)
-        adapter = MainAdapter(arrayListOf())
-        recyclerView.addItemDecoration(
-                DividerItemDecoration(
-                        recyclerView.context,
-                        (recyclerView.layoutManager as LinearLayoutManager).orientation
-                )
-        )
+        recyclerView.layoutManager = GridLayoutManager(this, 2, LinearLayoutManager.VERTICAL, false)
+        adapter = MainAdapter(arrayListOf()) { data ->
+            val intent = Intent(this, DetailActivity::class.java)
+            intent.putExtra("imageUrl", data.images.downsized.url)
+            intent.putExtra("rating", data.rating)
+            intent.putExtra("source", data.source)
+            intent.putExtra("display_name", data.user?.display_name)
+            startActivity(intent)
+        }
         recyclerView.adapter = adapter
     }
 
     private fun setupObservers() {
-        viewModel.getData().observe(this, Observer {
+        viewModel.getData().observe(this, Observer { it ->
             it?.let { resource ->
                 when (resource.status) {
                     Status.SUCCESS -> {
                         recyclerView.visibility = View.VISIBLE
                         progressBar.visibility = View.GONE
-                        resource.data?.let { data -> retrieveList(data) }
+                        resource.data?.let(::retrieveList)
                     }
                     Status.ERROR -> {
                         recyclerView.visibility = View.VISIBLE
@@ -73,10 +69,12 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun retrieveList(data: List<Data>) {
-        adapter.apply {
-            addData(data)
-            notifyDataSetChanged()
+    private fun retrieveList(data: List<Datam>?) {
+        data?.let{
+            adapter.apply {
+                addData(it)
+                notifyDataSetChanged()
+            }
         }
     }
 }
