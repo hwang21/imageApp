@@ -2,7 +2,7 @@ package com.s.popularimageapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.s.popularimageapp.Repository.Repository
+import com.s.popularimageapp.repository.Repository
 import com.s.popularimageapp.api.ApiService
 
 class ViewModelFactory(private val apiService: ApiService): ViewModelProvider.Factory {

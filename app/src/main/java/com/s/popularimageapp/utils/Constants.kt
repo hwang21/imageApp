@@ -1,4 +1,4 @@
-package com.s.popularimageapp
+package com.s.popularimageapp.utils
 
 class Constants {
 
